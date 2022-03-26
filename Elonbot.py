@@ -16,10 +16,10 @@ obj = s3.Object(bucket,key)
 books = json.load(obj.get()['Body'])
 
 # Twitter API credentials
-consumer_key = ""*****"
+consumer_key = "*****"
 consumer_secret = "*****"
-access_key = ""*****"
-access_secret = ""*****"
+access_key = "*****"
+access_secret = "*****"
 
 
 def get_all_tweets(screen_name):
@@ -116,9 +116,9 @@ ElonBookDict = markov_chain(elonbooks)
 random.seed(int(time.time()))
 tweet = generate_sequence(ElonBookDict)
 
-auth = tweepy.OAuthHandler(""*****", ""*****")
-auth.set_access_token(""*****",
-                      ""*****")
+auth = tweepy.OAuthHandler("*****", "*****")
+auth.set_access_token("*****",
+                      "*****")
 
 # Create API object
 api = tweepy.API(auth, wait_on_rate_limit=True,
