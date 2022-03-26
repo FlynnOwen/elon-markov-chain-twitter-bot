@@ -13,7 +13,7 @@ jobs:
       uses: qubitro/action-lambda-python-zip@v1.0
       with:
         lambda_layer_arn: 'arn:aws:lambda:ap-southeast-2:258949081668:layer:markov-chain-tweet-layer'
-        lambda_function_name: 'markov-chain-tweet'
+        lambda_function_name: 'arn:aws:lambda:ap-southeast-2:258949081668:function:makov-chain-tweet'
         lambda_region: 'ap-southeast-2'
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
