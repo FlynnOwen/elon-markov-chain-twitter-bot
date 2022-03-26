@@ -2,6 +2,7 @@ name: deploy-py-lambda
 on:
   push:
     branches:
+      - main
       - master
 jobs:
   build:
