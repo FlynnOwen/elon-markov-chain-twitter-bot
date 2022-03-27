@@ -71,19 +71,19 @@ def clean_tweets(tweets):
     return tweets
 
 
-def markov_chain(text):
+def create_markov_chain(text):
     # Tokenize by word, including punctuation
     words = text.split(' ')
 
     # Initialize default dict to hold all words
-    m_dict = defaultdict(list)
+    markov_chain = defaultdict(list)
 
     for current_word, next_word in zip(words[0:-1], words[1:]):
-        m_dict[current_word].append(next_word)
+        markov_chain[current_word].append(next_word)
 
     # Convert default dict back to dictionary
-    m_dict = dict(m_dict)
-    return m_dict
+    markov_chain = dict(markov_chain)
+    return markov_chain
 
 
 def generate_sequence(chain):
@@ -119,7 +119,7 @@ def lambda_handler(event, context):
     elon = clean_tweets(elon)
     elonbooks = elon + books
 
-    elon_book_dict = markov_chain(elonbooks)
+    elon_book_dict = create_markov_chain(elonbooks)
 
     tweet = generate_sequence(elon_book_dict)
 
