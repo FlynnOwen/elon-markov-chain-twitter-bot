@@ -20,17 +20,25 @@ def authorize_tweepy():
     auth.set_access_token(access_key,
                           access_secret)
 
-    return auth
+    api = tweepy.API(auth)
+    return api
 
 
-def get_all_tweets(screen_name, auth):
+def load_book_data(key, bucket):
+    s3 = boto3.resource('s3')
+
+    obj = s3.Object(bucket, key)
+    books = json.load(obj.get()['Body'])
+
+    return books
+
+
+def get_all_tweets(screen_name, api):
     """Twitter only allows access to a users most recent 3240 tweets with this method"""
 
-    # initialize tweepy
-    api = tweepy.API(auth)
     all_tweets = []
-
     oldest = False
+
     # keep grabbing tweets until there are no tweets left to grab
     while True:
         if oldest:
@@ -109,16 +117,10 @@ def generate_sequence(chain):
 
 
 def lambda_handler(event, context):
-    key = 'bookdata.json'
-    bucket = 'trainingdatajson'
+    api = authorize_tweepy()
 
-    s3 = boto3.resource('s3')
-
-    obj = s3.Object(bucket, key)
-    books = json.load(obj.get()['Body'])
-
-    auth = authorize_tweepy()
-    elon = get_all_tweets('elonmusk', auth)
+    books = load_book_data('bookdata.json', 'trainingdatajson')
+    elon = get_all_tweets('elonmusk', api)
 
     elon = clean_tweets(elon)
     elonbooks = elon + books
@@ -126,10 +128,6 @@ def lambda_handler(event, context):
     elon_book_dict = create_markov_chain(elonbooks)
 
     tweet = generate_sequence(elon_book_dict)
-
-    # Create API object
-    api = tweepy.API(auth, wait_on_rate_limit=True,
-                     wait_on_rate_limit_notify=True)
 
     return {
     api.update_status(tweet)
