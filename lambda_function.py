@@ -115,9 +115,9 @@ ElonBookDict = markov_chain(elonbooks)
 random.seed(int(time.time()))
 tweet = generate_sequence(ElonBookDict)
 
-auth = tweepy.OAuthHandler("*****", "*****")
-auth.set_access_token("*****",
-                      "*****")
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_key,
+                      access_secret)
 
 # Create API object
 api = tweepy.API(auth, wait_on_rate_limit=True,
