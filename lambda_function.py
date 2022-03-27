@@ -121,9 +121,9 @@ def generate_sequence(chain):
 
     return sentence
 
-ElonBookDict = markov_chain(elonbooks)
+elon_book_dict = markov_chain(elonbooks)
 
-tweet = generate_sequence(ElonBookDict)
+tweet = generate_sequence(elon_book_dict)
 
 # Create API object
 api = tweepy.API(auth, wait_on_rate_limit=True,
