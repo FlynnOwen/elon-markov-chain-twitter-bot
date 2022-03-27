@@ -28,32 +28,24 @@ def get_all_tweets(screen_name, auth):
 
     # initialize tweepy
     api = tweepy.API(auth)
-
-    # initialize a list to hold all the tweepy Tweets
-    alltweets = []
-
-    # make initial request for most recent tweets (200 is the maximum allowed count)
-    new_tweets = api.user_timeline(screen_name=screen_name, count=200)
-
-    # save most recent tweets
-    alltweets.extend(new_tweets)
-
-    # save the id of the oldest tweet less one
-    oldest = alltweets[-1].id - 1
+    all_tweets = []
 
     # keep grabbing tweets until there are no tweets left to grab
-    while len(new_tweets) > 0:
-        # all subsiquent requests use the max_id param to prevent duplicates
+    while True:
+        # all subsequent requests use the max_id param to prevent duplicates
         new_tweets = api.user_timeline(screen_name=screen_name, count=200, max_id=oldest)
 
         # save most recent tweets
-        alltweets.extend(new_tweets)
+        all_tweets.extend(new_tweets)
 
         # update the id of the oldest tweet less one
-        oldest = alltweets[-1].id - 1
+        oldest = all_tweets[-1].id - 1
 
-    # transform the tweepy tweets into a 2D array that will populate the csv
-    return [tweet.text for tweet in alltweets]
+        if len(new_tweets) > 0:
+            break
+
+    # Save just the text returned from tweets
+    return [tweet.text for tweet in all_tweets]
 
 
 def clean_tweets(tweets):
