@@ -92,7 +92,7 @@ def generate_sequence(chain):
     sentence = current_word.capitalize()
 
     # Generate next word in sequence
-    while current_word[len(current_word) - 1] not in ['.', '…', '?', '!'] and len(sentence) < 260:
+    while current_word[-1] not in ['.', '…', '?', '!'] and len(sentence) < 260:
         next_word = random.choice(chain[current_word])
         sentence += ' ' + next_word
         current_word = next_word
