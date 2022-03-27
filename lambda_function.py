@@ -26,7 +26,7 @@ def authorize_tweepy():
 def get_all_tweets(screen_name, auth):
     """Twitter only allows access to a users most recent 3240 tweets with this method"""
 
-    # authorize twitter, initialize tweepy
+    # initialize tweepy
     api = tweepy.API(auth)
 
     # initialize a list to hold all the tweepy Tweets
