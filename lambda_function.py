@@ -1,11 +1,13 @@
-import re
-import tweepy
-import random
-import boto3
-import json
 from collections import defaultdict
+import random
 import time
 import os
+import json
+import re
+
+import tweepy
+import boto3
+
 
 key = 'bookdata.json'
 bucket = 'trainingdatajson'
