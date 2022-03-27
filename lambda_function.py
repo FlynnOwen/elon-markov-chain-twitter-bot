@@ -8,6 +8,9 @@ import tweepy
 import boto3
 
 
+SENTENCE_CONCLUSIONS = ['!', '.', '…', '!', '/?']
+
+
 def authorize_tweepy():
     """ Load in Twitter credentials and authoize Tweepy object """
 
@@ -61,22 +64,18 @@ def get_all_tweets(screen_name, api):
 
 
 def clean_tweets(tweets):
-    for i in range(len(tweets)):
-        if tweets[i][len(tweets[i]) - 1] not in ['!', '.', '…', '!', '/?']:
+    # Delete tweets with links and tags. Otherwise add conclusion to tweet.
+    for i, tweet in enumerate(tweets):
+        if tweet[:5] == 'https':
+            tweets[i] = ''
+        elif tweet[:1] == '@':
+            tweets[i] = ''
+        elif tweet[-1] not in SENTENCE_CONCLUSIONS:
             tweets[i] += '.'
 
     tweets = ' '.join(tweets)
-    tweets = tweets.split(' ')
 
-    for i in range(0, len(tweets)):
-        if tweets[i][:5] == 'https':
-            tweets[i] = ''
-        elif tweets[i][:1] == '@':
-            tweets[i] = ''
-
-    tweets = ' '.join(tweets)
-
-    tweets = re.sub('  ', '', tweets)
+    #tweets = re.sub('  ', '', tweets)
     tweets = re.sub('\n', ' ', tweets)
     tweets = re.sub("\\'", "'", tweets)
 
@@ -104,13 +103,13 @@ def generate_sequence(chain):
     sentence = current_word.capitalize()
 
     # Generate next word in sequence
-    while current_word[-1] not in ['.', '…', '?', '!'] and len(sentence) < 260:
+    while current_word[-1] not in SENTENCE_CONCLUSIONS and len(sentence) < 260:
         next_word = random.choice(chain[current_word])
         sentence += ' ' + next_word
         current_word = next_word
 
     # Put stop word at the end
-    if sentence[-1] not in ['.', '…', '?', '!']:
+    if sentence[-1] not in SENTENCE_CONCLUSIONS:
         sentence += '.'
 
     return sentence
