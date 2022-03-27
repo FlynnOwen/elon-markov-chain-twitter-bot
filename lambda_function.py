@@ -17,19 +17,25 @@ s3 = boto3.resource('s3')
 obj = s3.Object(bucket, key)
 books = json.load(obj.get()['Body'])
 
-# Twitter API credentials
-consumer_key = os.getenv('consumer_key')
-consumer_secret = os.getenv('consumer_secret')
-access_key = os.getenv('access_key')
-access_secret = os.getenv('access_secret')
+
+def authorize_tweepy():
+    """ Load in Twitter credentials and authoize Tweepy object """
+    consumer_key = os.getenv('consumer_key')
+    consumer_secret = os.getenv('consumer_secret')
+    access_key = os.getenv('access_key')
+    access_secret = os.getenv('access_secret')
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_key,
+                          access_secret)
+
+    return auth
 
 
-def get_all_tweets(screen_name):
-    # Twitter only allows access to a users most recent 3240 tweets with this method
+def get_all_tweets(screen_name, auth):
+    """Twitter only allows access to a users most recent 3240 tweets with this method"""
 
     # authorize twitter, initialize tweepy
-    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-    auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
 
     # initialize a list to hold all the tweepy Tweets
@@ -59,7 +65,8 @@ def get_all_tweets(screen_name):
     return [tweet.text for tweet in alltweets]
 
 
-elon = get_all_tweets('elonmusk')
+auth = authorize_tweepy()
+elon = get_all_tweets('elonmusk', auth)
 for i in range(len(elon)):
     if elon[i][len(elon[i]) - 1] not in ['!', '.', '…', '!', '/?']:
         elon[i] += '.'
@@ -116,10 +123,6 @@ ElonBookDict = markov_chain(elonbooks)
 
 random.seed(int(time.time()))
 tweet = generate_sequence(ElonBookDict)
-
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_key,
-                      access_secret)
 
 # Create API object
 api = tweepy.API(auth, wait_on_rate_limit=True,
