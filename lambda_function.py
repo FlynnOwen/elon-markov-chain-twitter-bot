@@ -53,8 +53,7 @@ def get_all_tweets(screen_name):
         oldest = alltweets[-1].id - 1
 
     # transform the tweepy tweets into a 2D array that will populate the csv
-    outtweets = [[tweet.text.encode("utf-8")] for tweet in alltweets]
-    return ([tweet.text for tweet in alltweets])
+    return [tweet.text for tweet in alltweets]
 
 
 elon = get_all_tweets('elonmusk')
