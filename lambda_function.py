@@ -30,15 +30,19 @@ def get_all_tweets(screen_name, auth):
     api = tweepy.API(auth)
     all_tweets = []
 
+    oldest = False
     # keep grabbing tweets until there are no tweets left to grab
     while True:
-        # all subsequent requests use the max_id param to prevent duplicates
-        new_tweets = api.user_timeline(screen_name=screen_name, count=200, max_id=oldest)
+        if oldest:
+            # all subsequent requests use the max_id param to prevent duplicates
+            new_tweets = api.user_timeline(screen_name=screen_name, count=200, max_id=oldest)
+        else:
+            new_tweets = api.user_timeline(screen_name=screen_name, count=200)
 
         # save most recent tweets
         all_tweets.extend(new_tweets)
 
-        # update the id of the oldest tweet less one
+        # update the id of the oldest tweet
         oldest = all_tweets[-1].id - 1
 
         if len(new_tweets) > 0:
