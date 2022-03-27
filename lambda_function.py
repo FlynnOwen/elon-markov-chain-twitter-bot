@@ -1,6 +1,5 @@
 from collections import defaultdict
 import random
-import time
 import os
 import json
 import re
@@ -20,6 +19,7 @@ books = json.load(obj.get()['Body'])
 
 def authorize_tweepy():
     """ Load in Twitter credentials and authoize Tweepy object """
+
     consumer_key = os.getenv('consumer_key')
     consumer_secret = os.getenv('consumer_secret')
     access_key = os.getenv('access_key')
@@ -106,22 +106,23 @@ def markov_chain(text):
 
 def generate_sequence(chain):
     # Capitalize first word
-    word1 = random.choice(list(chain.keys()))
-    sentence = word1.capitalize()
+    current_word = random.choice(list(chain.keys()))
+    sentence = current_word.capitalize()
 
     # Generate next word in sequence
-    while word1[len(word1) - 1] not in ['.', '…', '?', '!'] and len(sentence) < 260:
-        word2 = random.choice(chain[word1])
-        word1 = word2
-        sentence += ' ' + word2
+    while current_word[len(current_word) - 1] not in ['.', '…', '?', '!'] and len(sentence) < 260:
+        next_word = random.choice(chain[current_word])
+        sentence += ' ' + next_word
+        current_word = next_word
 
-    if sentence[len(sentence) - 1] not in ['.', '…', '?', '!']:
+    # Put stop word at the end
+    if sentence[-1] not in ['.', '…', '?', '!']:
         sentence += '.'
+
     return sentence
 
 ElonBookDict = markov_chain(elonbooks)
 
-random.seed(int(time.time()))
 tweet = generate_sequence(ElonBookDict)
 
 # Create API object
