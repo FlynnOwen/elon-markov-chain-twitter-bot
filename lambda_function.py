@@ -8,15 +8,6 @@ import tweepy
 import boto3
 
 
-key = 'bookdata.json'
-bucket = 'trainingdatajson'
-
-s3 = boto3.resource('s3')
-
-obj = s3.Object(bucket, key)
-books = json.load(obj.get()['Body'])
-
-
 def authorize_tweepy():
     """ Load in Twitter credentials and authoize Tweepy object """
 
@@ -65,28 +56,27 @@ def get_all_tweets(screen_name, auth):
     return [tweet.text for tweet in alltweets]
 
 
-auth = authorize_tweepy()
-elon = get_all_tweets('elonmusk', auth)
-for i in range(len(elon)):
-    if elon[i][len(elon[i]) - 1] not in ['!', '.', '…', '!', '/?']:
-        elon[i] += '.'
+def clean_tweets(tweets):
+    for i in range(len(tweets)):
+        if tweets[i][len(tweets[i]) - 1] not in ['!', '.', '…', '!', '/?']:
+            tweets[i] += '.'
 
-elon = ' '.join(elon)
-elon = elon.split(' ')
+    tweets = ' '.join(tweets)
+    tweets = tweets.split(' ')
 
-for i in range(0, len(elon)):
-    if elon[i][:5] == 'https':
-        elon[i] = ''
-    elif elon[i][:1] == '@':
-        elon[i] = ''
+    for i in range(0, len(tweets)):
+        if tweets[i][:5] == 'https':
+            tweets[i] = ''
+        elif tweets[i][:1] == '@':
+            tweets[i] = ''
 
-elon = ' '.join(elon)
+    tweets = ' '.join(tweets)
 
-elon = re.sub('  ', '', elon)
-elon = re.sub('\n', ' ', elon)
-elon = re.sub("\\'", "'", elon)
+    tweets = re.sub('  ', '', tweets)
+    tweets = re.sub('\n', ' ', tweets)
+    tweets = re.sub("\\'", "'", tweets)
 
-elonbooks = elon + books
+    return tweets
 
 
 def markov_chain(text):
@@ -121,15 +111,29 @@ def generate_sequence(chain):
 
     return sentence
 
-elon_book_dict = markov_chain(elonbooks)
-
-tweet = generate_sequence(elon_book_dict)
-
-# Create API object
-api = tweepy.API(auth, wait_on_rate_limit=True,
-                 wait_on_rate_limit_notify=True)
 
 def lambda_handler(event, context):
+    key = 'bookdata.json'
+    bucket = 'trainingdatajson'
+
+    s3 = boto3.resource('s3')
+
+    obj = s3.Object(bucket, key)
+    books = json.load(obj.get()['Body'])
+
+    auth = authorize_tweepy()
+    elon = get_all_tweets('elonmusk', auth)
+
+    elon = clean_tweets(elon)
+    elonbooks = elon + books
+
+    elon_book_dict = markov_chain(elonbooks)
+
+    tweet = generate_sequence(elon_book_dict)
+
+    # Create API object
+    api = tweepy.API(auth, wait_on_rate_limit=True,
+                     wait_on_rate_limit_notify=True)
 
     return {
     api.update_status(tweet)
