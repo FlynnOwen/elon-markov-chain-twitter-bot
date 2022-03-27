@@ -1,2 +1,2 @@
-tweepy
+tweepy==3.10.0
 boto3
