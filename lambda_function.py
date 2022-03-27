@@ -5,6 +5,7 @@ import boto3
 import json
 from collections import defaultdict
 import time
+import os
 
 key = 'bookdata.json'
 bucket = 'trainingdatajson'
@@ -15,10 +16,10 @@ obj = s3.Object(bucket, key)
 books = json.load(obj.get()['Body'])
 
 # Twitter API credentials
-consumer_key = "*****"
-consumer_secret = "*****"
-access_key = "*****"
-access_secret = "*****"
+consumer_key = os.getenv('consumer_key')
+consumer_secret = os.getenv('consumer_secret')
+access_key = os.getenv('access_key')
+access_secret = os.getenv('access_secret')
 
 
 def get_all_tweets(screen_name):
