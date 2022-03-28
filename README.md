@@ -7,5 +7,5 @@
   
   From here, a first order Markov Chain is generated, and words are recursively generated from this Markov Chain until either the Twitter word limit or a sentence conclusion is reached.
 </p>
-
+<br>
 <h2 align="center"> Markov What?! </h2>
