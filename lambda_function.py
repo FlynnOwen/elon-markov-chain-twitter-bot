@@ -8,7 +8,23 @@ import tweepy
 import boto3
 
 
-SENTENCE_CONCLUSIONS = ['!', '.', '…', '!', '/?']
+SENTENCE_CONCLUSIONS = {'!', '.', '…', '!', '/?'}
+
+
+def main():
+    api = authorize_tweepy()
+
+    books = load_book_data('bookdata.json', 'trainingdatajson')
+    elons_tweets_raw = get_all_tweets('elonmusk', api)
+
+    elon_tweets_clean = clean_tweets(elons_tweets_raw)
+    elon_books = elon_tweets_clean + books
+
+    elon_book_markov_chain = create_markov_chain(elon_books)
+
+    tweet = generate_sequence(elon_book_markov_chain)
+
+    api.update_status(tweet)
 
 
 def authorize_tweepy():
@@ -116,18 +132,4 @@ def generate_sequence(chain):
 
 
 def lambda_handler(event, context):
-    api = authorize_tweepy()
-
-    books = load_book_data('bookdata.json', 'trainingdatajson')
-    elon = get_all_tweets('elonmusk', api)
-
-    elon = clean_tweets(elon)
-    elonbooks = elon + books
-
-    elon_book_dict = create_markov_chain(elonbooks)
-
-    tweet = generate_sequence(elon_book_dict)
-
-    return {
-    api.update_status(tweet)
-    }
+    main()
