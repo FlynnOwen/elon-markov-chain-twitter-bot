@@ -46,6 +46,7 @@ def authorize_tweepy():
 
 
 def load_book_data(key, bucket):
+    """ Read in children's book data from s3"""
     s3 = boto3.resource('s3')
 
     obj = s3.Object(bucket, key)
@@ -55,20 +56,17 @@ def load_book_data(key, bucket):
 
 
 def get_all_tweets(screen_name, api):
-    """Twitter only allows access to a users most recent 3240 tweets with this method"""
+    """ Pull 3240 of Elon Musks latest Tweets"""
 
     all_tweets = []
     oldest = False
 
-    # keep grabbing tweets until there are no tweets left to grab
     while True:
         if oldest:
-            # all subsequent requests use the max_id param to prevent duplicates
             new_tweets = api.user_timeline(screen_name=screen_name, count=200, max_id=oldest)
         else:
             new_tweets = api.user_timeline(screen_name=screen_name, count=200)
 
-        # save most recent tweets
         all_tweets.extend(new_tweets)
 
         # update the id of the oldest tweet
@@ -77,12 +75,11 @@ def get_all_tweets(screen_name, api):
         if len(new_tweets) > 0:
             break
 
-    # Save just the text returned from tweets
     return [tweet.text for tweet in all_tweets]
 
 
 def clean_tweets(tweets):
-    # Delete tweets with links and tags. Otherwise add conclusion to tweet.
+    """ Delete tweets with links and tags. Otherwise add conclusion to tweet. """
     for i, tweet in enumerate(tweets):
         if tweet[:5] == 'https':
             tweets[i] = ''
@@ -100,21 +97,20 @@ def clean_tweets(tweets):
 
 
 def create_markov_chain(text):
-    # Tokenize by word, including punctuation
+    """ Create a markov chain using a default dictionary, and transform to dictionary """
     words = text.split(' ')
 
-    # Initialize default dict to hold all words
     markov_chain = defaultdict(list)
 
     for current_word, next_word in zip(words[0:-1], words[1:]):
         markov_chain[current_word].append(next_word)
 
-    # Convert default dict back to dictionary
     markov_chain = dict(markov_chain)
     return markov_chain
 
 
 def generate_sequence(chain):
+    """ Stochastically generate a sentence from a Markov Chain """
     # Init first word with capital letter
     current_word = random.choice(list(chain.keys()))
     sentence = current_word.capitalize()
