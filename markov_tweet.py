@@ -132,5 +132,5 @@ def generate_sequence(chain):
     return sentence
 
 
-def lambda_handler(event, context):
+def lambda_main(event, context):
     main()
