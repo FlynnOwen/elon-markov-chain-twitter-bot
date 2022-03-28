@@ -1,4 +1,4 @@
-<h1 align="center"> Elon Markov Chain Twitter Bot </h1> 
+<h1 align="center"> Elon Markov Chain Twitter Bot :bird: </h1> 
 <h2 align="center"> What is it? </h2>
 <img align="left" height=250 src="img/twitter.png"/>
 
