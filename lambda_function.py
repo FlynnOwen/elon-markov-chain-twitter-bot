@@ -91,7 +91,6 @@ def clean_tweets(tweets):
 
     tweets = ' '.join(tweets)
 
-    #tweets = re.sub('  ', '', tweets)
     tweets = re.sub('\n', ' ', tweets)
     tweets = re.sub("\\'", "'", tweets)
 
@@ -114,7 +113,7 @@ def create_markov_chain(text):
 
 
 def generate_sequence(chain):
-    # Capitalize first word
+    # Init first word with capital letter
     current_word = random.choice(list(chain.keys()))
     sentence = current_word.capitalize()
 
@@ -124,7 +123,7 @@ def generate_sequence(chain):
         sentence += ' ' + next_word
         current_word = next_word
 
-    # Put stop word at the end
+    # Put full stop at the end of sentence
     if sentence[-1] not in SENTENCE_CONCLUSIONS:
         sentence += '.'
 
