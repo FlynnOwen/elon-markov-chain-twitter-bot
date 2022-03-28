@@ -5,5 +5,5 @@
 <p align="center"> 
   Upon running of the lambda function (markov_tweet.py), all Elon Musks Tweets are scraped, cleaned and concatenated with a large dataset of childrens books. 
   
-  From here, a first order Markov Chain is generated, and words are recursively generated from this Markov Chain until either the Twitter word limit is reached, or a sentece conclusion is reached ({., !, ?, ...}).
+  From here, a first order Markov Chain is generated, and words are recursively generated from this Markov Chain until either the Twitter word limit or a sentence conclusion is reached.
 </p>
