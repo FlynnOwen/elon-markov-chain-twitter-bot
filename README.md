@@ -1,4 +1,5 @@
 <h1 align="center"> Elon Markov Chain Twitter Bot :bird: </h1> 
+<p align="center"> Ever wondered what Elon Musk would sound like if he started quoting childrens books halfway through his Tweets? Wonder no longer! </p>
 <h2 align="center"> What is it? </h2>
 <img align="left" height=250 src="img/twitter.png"/>
 
