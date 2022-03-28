@@ -12,18 +12,20 @@ SENTENCE_CONCLUSIONS = {'!', '.', '…', '!', '/?'}
 
 
 def main():
+    # Pull, clean Elons tweets
     api = authorize_tweepy()
-
-    books = load_book_data('bookdata.json', 'trainingdatajson')
     elons_tweets_raw = get_all_tweets('elonmusk', api)
-
     elon_tweets_clean = clean_tweets(elons_tweets_raw)
+
+    # Load children books, combine with tweets
+    books = load_book_data('bookdata.json', 'trainingdatajson')
     elon_books = elon_tweets_clean + books
 
+    # Create 1st order markov chain from combined data
     elon_book_markov_chain = create_markov_chain(elon_books)
 
+    # Randomly generate a sentence and tweet it
     tweet = generate_sequence(elon_book_markov_chain)
-
     api.update_status(tweet)
 
 
