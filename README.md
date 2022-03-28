@@ -15,7 +15,9 @@
 <p align="center"> 
   A Markov Chain is a stochastic model that describes a sequence of events. We call an event the transitioning of a state. Events must satisfy the **Markov Property** - meaning that the probability of the next state transition depends only on current or previous states. In Figure 1, our states are the nodes A & E. Events are given by the orange edges - with state transition probabilities in black.
   
+  In this example, we are considering only a first order Markov Chain - this means that we only care about the current state of the chain. In math-y terms:
+
   ```math
-  e^{x-1}
+    P(x_{t+1} | x_t, x_{t-1}, ..., x_1) = P(x_{t+1} | x_t)
   ```
 </p>
