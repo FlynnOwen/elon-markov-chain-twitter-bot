@@ -1,6 +1,8 @@
 <h1 align="center"> Elon Markov Chain Twitter Bot </h1> 
 <h2 align="center"> What is it? </h2>
 <img align="left" height=250 src="img/twitter.png"/>
+
+<br>
 <p align="center"> 
   Upon running of the lambda function (markov_tweet.py), all Elon Musks Tweets are scraped, cleaned and concatenated with a large dataset of childrens books. 
   
