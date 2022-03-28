@@ -1,4 +1,5 @@
-<h1 align="center"> Elon Markov Chain Twitter Bot </h1> 
+<h1 align="center"> Elon Markov Chain Twitter Bot :bird: </h1> 
+<p align="center"> Ever wondered what Elon Musk would sound like if he started quoting childrens books halfway through his Tweets? Wonder no longer! </p>
 <h2 align="center"> What is it? </h2>
 <img align="left" height=250 src="img/twitter.png"/>
 
@@ -12,3 +13,12 @@
 <h2 align="center"> Markov What?! </h2>
 
 <img align="right" height=350 src="img/markov_chain.png"/>
+<p align="center"> 
+  A Markov Chain is a stochastic model that describes a sequence of events. We call an event the transitioning of a state. Events must satisfy the Markov Property - meaning that the probability of the next state transition depends only on current or previous states. In Figure 1, our states are the nodes A & E. Events are given by the orange edges - with state transition probabilities in black.
+  
+  In this example, we are considering only a first order Markov Chain - this means that we only care about the current state of the chain. In math-y terms:
+
+  ```math
+    P(x_{t+1} | x_t, x_{t-1}, ..., x_1) = P(x_{t+1} | x_t)
+  ```
+</p>
