@@ -10,3 +10,5 @@
 </p>
 <br>
 <h2 align="center"> Markov What?! </h2>
+
+<img align="right" height=350 src="img/markov_chain.png"/>
