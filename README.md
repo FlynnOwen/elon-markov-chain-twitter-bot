@@ -1,5 +1,2 @@
-# Elon-bot
-Markov chain to Twitter bot. Trained on Elon Musk tweets.
-
-
-https://blog.jakoblind.no/aws-lambda-github-actions/
+<h1 align="center"> Elon Markov Chain Twitter Bot </h1> 
+<img align="center" src="img/twitter.png"/>
