@@ -63,16 +63,16 @@ def get_all_tweets(screen_name, api):
 
     while True:
         if oldest:
-            new_tweets = api.user_timeline(screen_name=screen_name, count=200, max_id=oldest)
+            new_tweets = api.user_timeline(screen_name=screen_name, count=200, max_id=oldest, wait_on_rate_limit=True)
         else:
-            new_tweets = api.user_timeline(screen_name=screen_name, count=200)
+            new_tweets = api.user_timeline(screen_name=screen_name, count=200, wait_on_rate_limit=True)
 
         all_tweets.extend(new_tweets)
 
         # update the id of the oldest tweet
         oldest = all_tweets[-1].id - 1
 
-        if len(new_tweets) > 0:
+        if len(all_tweets) >= 2500:
             break
 
     return [tweet.text for tweet in all_tweets]
@@ -92,6 +92,7 @@ def clean_tweets(tweets):
 
     tweets = re.sub('\n', ' ', tweets)
     tweets = re.sub("\\'", "'", tweets)
+    tweets = re.sub("  ", " ", tweets)
 
     return tweets
 
