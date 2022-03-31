@@ -21,4 +21,6 @@
   ```math
     P(x_{t+1} | x_t, x_{t-1}, ..., x_1) = P(x_{t+1} | x_t)
   ```
+  
+  Here, our 'sequence' is a large string of words combined between Elon Musk's Tweets, and a collection of childrens books. We consider words as our 'states', and our transition probabilities are the proportion of times that a word comes directly succeeding another word. For example, if the word "Tesla" has occured 50 times in our large string, and 20 of the times it occured, the direct succeeding word was "rocks!", our transition probability between "Tesla" and "rocks!" would be 20/50 or 0.4.
 </p>
