@@ -8,7 +8,7 @@ import tweepy
 import boto3
 
 
-SENTENCE_CONCLUSIONS = {'!', '.', '…', '!', '/?'}
+SENTENCE_CONCLUSIONS = {'!', '.', '…', '!', '/?', '?'}
 
 
 def main():
@@ -90,8 +90,10 @@ def clean_tweets(tweets):
 
     tweets = ' '.join(tweets)
 
-    tweets = re.sub('\n', ' ', tweets)
+    tweets = re.sub('\n', '', tweets)
     tweets = re.sub("\\'", "'", tweets)
+    tweets = re.sub("    ", " ", tweets)
+    tweets = re.sub("   ", " ", tweets)
     tweets = re.sub("  ", " ", tweets)
 
     return tweets
